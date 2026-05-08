@@ -45,8 +45,14 @@ Truy cập: `https://<username>.github.io/<ten-repo>/`
 .
 ├── index.html              # Toàn bộ tool (HTML + CSS + JS)
 ├── README.md               # File này
+├── LICENSE                 # MIT License
+├── .gitignore              # Loại trừ file IDE/OS/env
 └── claude-code-history.txt # Lịch sử trò chuyện với Claude Code
 ```
+
+## License
+
+[MIT](LICENSE)
 
 ## Ghi chú pháp lý
 
