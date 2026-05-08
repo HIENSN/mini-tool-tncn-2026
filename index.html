@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tính thuế TNCN 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0b0f1a;
+    --bg-grad-1: #1e1b4b;
+    --bg-grad-2: #0f172a;
+    --card: #ffffff;
+    --card-soft: #f8fafc;
+    --border: #e2e8f0;
+    --border-strong: #cbd5e1;
+    --text: #0f172a;
+    --text-soft: #475569;
+    --muted: #94a3b8;
+    --primary: #6366f1;
+    --primary-dark: #4f46e5;
+    --primary-soft: #eef2ff;
+    --accent: #ec4899;
+    --success: #10b981;
+    --danger: #ef4444;
+    --shadow-lg: 0 20px 50px -12px rgba(15, 23, 42, 0.25);
+    --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.08);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    background:
+      radial-gradient(1200px 600px at 10% -10%, rgba(99,102,241,0.25), transparent 60%),
+      radial-gradient(900px 500px at 100% 0%, rgba(236,72,153,0.18), transparent 60%),
+      linear-gradient(180deg, var(--bg-grad-1) 0%, var(--bg-grad-2) 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+    color: var(--text);
+    padding: 40px 20px 60px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .header {
+    max-width: 920px;
+    margin: 0 auto 24px;
+    color: #fff;
+    text-align: center;
+  }
+  .badge-top {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    color: #cbd5e1;
+    backdrop-filter: blur(10px);
+  }
+  .badge-top .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--success);
+    box-shadow: 0 0 8px var(--success);
+  }
+  .header h1 {
+    font-size: 34px;
+    font-weight: 800;
+    letter-spacing: -0.6px;
+    margin: 14px 0 6px;
+    background: linear-gradient(135deg, #fff 0%, #c7d2fe 60%, #fbcfe8 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .header .tagline {
+    color: #94a3b8;
+    font-size: 14px;
+    margin: 0;
+  }
+
+  .wrap {
+    max-width: 920px;
+    margin: 0 auto;
+    background: var(--card);
+    border-radius: 20px;
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .law-note {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    background: linear-gradient(135deg, #eef2ff 0%, #fce7f3 100%);
+    padding: 16px 24px;
+    font-size: 13px;
+    color: #3730a3;
+    border-bottom: 1px solid var(--border);
+  }
+  .law-note .icon {
+    width: 20px; height: 20px;
+    flex-shrink: 0;
+    color: var(--primary);
+    margin-top: 1px;
+  }
+  .law-note b { color: #1e1b4b; }
+
+  .body { padding: 28px 32px 32px; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px 22px;
+  }
+
+  .field { display: flex; flex-direction: column; }
+  label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-soft);
+    margin-bottom: 8px;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+  }
+
+  input[type="number"], input[type="text"] {
+    padding: 12px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-size: 15px;
+    font-family: inherit;
+    width: 100%;
+    background: #fff;
+    color: var(--text);
+    transition: all 0.15s ease;
+  }
+  input[type="number"], input.amount-input {
+    font-family: 'JetBrains Mono', 'Consolas', monospace;
+    font-weight: 500;
+    text-align: right;
+  }
+  input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(99,102,241,0.12);
+  }
+  input:disabled {
+    background: linear-gradient(135deg, #eef2ff 0%, #f3e8ff 100%);
+    color: var(--primary-dark);
+    font-weight: 700;
+    cursor: not-allowed;
+    border-color: #c7d2fe;
+  }
+  .hint {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 6px;
+    line-height: 1.4;
+  }
+
+  fieldset {
+    grid-column: 1 / -1;
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    padding: 20px 22px 18px;
+    margin: 0;
+    background: var(--card-soft);
+  }
+  legend {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--primary-dark);
+    padding: 4px 10px;
+    background: var(--primary-soft);
+    border-radius: 6px;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+  }
+
+  .income-row {
+    display: grid;
+    grid-template-columns: 1fr 240px 40px;
+    gap: 10px;
+    align-items: center;
+    margin: 10px 0;
+  }
+  .income-row input { padding: 10px 12px; background: #fff; }
+
+  .btn-remove {
+    background: transparent;
+    color: var(--muted);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    width: 40px; height: 40px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 600;
+    transition: all 0.15s;
+  }
+  .btn-remove:hover {
+    background: #fef2f2;
+    color: var(--danger);
+    border-color: #fecaca;
+  }
+
+  .btn-add {
+    margin-top: 10px;
+    padding: 10px 16px;
+    background: #fff;
+    color: var(--primary-dark);
+    border: 1.5px dashed #c7d2fe;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .btn-add:hover {
+    background: var(--primary-soft);
+    border-style: solid;
+    border-color: var(--primary);
+  }
+
+  .income-total {
+    margin-top: 14px;
+    padding: 12px 16px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    color: var(--text-soft);
+  }
+  .income-total b {
+    color: var(--primary-dark);
+    font-size: 18px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+  }
+
+  .btn-calc {
+    grid-column: 1 / -1;
+    margin-top: 8px;
+    padding: 16px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    cursor: pointer;
+    box-shadow: 0 8px 20px -6px rgba(99,102,241,0.5);
+    transition: all 0.2s;
+    text-transform: uppercase;
+  }
+  .btn-calc:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 28px -6px rgba(99,102,241,0.6);
+  }
+  .btn-calc:active { transform: translateY(0); }
+
+  .result {
+    margin-top: 28px;
+    padding: 0;
+    background: linear-gradient(180deg, #fafbff 0%, #ffffff 100%);
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .result-header {
+    background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+    padding: 22px 24px;
+    color: #fff;
+  }
+  .result-header .label {
+    font-size: 11px;
+    color: #a5b4fc;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .result-header .tax-amount {
+    font-size: 32px;
+    font-weight: 800;
+    font-family: 'JetBrains Mono', monospace;
+    background: linear-gradient(135deg, #fff 0%, #fbcfe8 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+  }
+  .result-header .effective-rate {
+    margin-top: 6px;
+    display: inline-block;
+    padding: 4px 10px;
+    background: rgba(255,255,255,0.12);
+    border-radius: 999px;
+    font-size: 12px;
+    color: #c7d2fe;
+    font-weight: 500;
+  }
+
+  .result-body { padding: 22px 24px 24px; }
+
+  .breakdown {
+    display: grid;
+    gap: 0;
+    margin-bottom: 18px;
+  }
+  .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    font-size: 14px;
+    border-bottom: 1px dashed var(--border);
+  }
+  .row:last-child { border-bottom: none; }
+  .row span:first-child { color: var(--text-soft); }
+  .row span:last-child {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .row.highlight {
+    background: var(--primary-soft);
+    margin: 6px -12px;
+    padding: 12px;
+    border-radius: 8px;
+    border-bottom: none;
+  }
+  .row.highlight span:first-child { color: var(--primary-dark); font-weight: 700; }
+  .row.highlight span:last-child { color: var(--primary-dark); font-size: 16px; }
+
+  .row.net {
+    margin-top: 10px;
+    padding: 14px 16px;
+    background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+    border: 1px solid #a7f3d0;
+    border-radius: 10px;
+    border-bottom: none;
+    font-size: 15px;
+  }
+  .row.net span:first-child { color: #047857; font-weight: 700; }
+  .row.net span:last-child { color: #047857; font-size: 17px; font-weight: 700; }
+
+  .brackets-section {
+    margin-top: 18px;
+    padding-top: 18px;
+    border-top: 1px solid var(--border);
+  }
+  .brackets-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    margin-bottom: 10px;
+  }
+  table.brackets {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 13px;
+  }
+  table.brackets th {
+    background: var(--card-soft);
+    font-weight: 600;
+    color: var(--text-soft);
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 0.4px;
+    padding: 10px 12px;
+    text-align: right;
+    border-bottom: 1.5px solid var(--border);
+  }
+  table.brackets th:first-child, table.brackets th:nth-child(2) { text-align: left; }
+  table.brackets td {
+    padding: 10px 12px;
+    text-align: right;
+    border-bottom: 1px solid var(--border);
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+  }
+  table.brackets td:first-child, table.brackets td:nth-child(2) { text-align: left; font-family: inherit; }
+  table.brackets tr:last-child td { border-bottom: none; }
+  table.brackets td.zero { color: var(--muted); font-weight: 400; }
+  table.brackets tr.active td {
+    background: linear-gradient(90deg, rgba(99,102,241,0.04) 0%, rgba(236,72,153,0.04) 100%);
+  }
+
+  .pill {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #fff;
+    font-family: inherit;
+  }
+  .pill-5  { background: #10b981; }
+  .pill-10 { background: #06b6d4; }
+  .pill-20 { background: #6366f1; }
+  .pill-30 { background: #f59e0b; }
+  .pill-35 { background: #ef4444; }
+
+  .tier-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px; height: 26px;
+    background: var(--primary-soft);
+    color: var(--primary-dark);
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 12px;
+  }
+
+  @media (max-width: 640px) {
+    body { padding: 20px 12px 40px; }
+    .header h1 { font-size: 26px; }
+    .body { padding: 22px 18px; }
+    .grid { grid-template-columns: 1fr; }
+    .income-row { grid-template-columns: 1fr 40px; }
+    .income-row input.amount-input { grid-column: 1 / -1; }
+    .result-header .tax-amount { font-size: 26px; }
+    table.brackets th, table.brackets td { padding: 8px 6px; font-size: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="badge-top"><span class="dot"></span> Cập nhật theo Luật TNCN 2025 — áp dụng từ 01/01/2026</div>
+  <h1>Tính thuế TNCN 2026</h1>
+  <p class="tagline">Công cụ tính thuế thu nhập cá nhân theo biểu lũy tiến 5 bậc mới</p>
+</div>
+
+<div class="wrap">
+  <div class="law-note">
+    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+    <div>
+      Áp dụng <b>Luật Thuế TNCN số 109/2025/QH15</b> (biểu lũy tiến 5 bậc) và
+      <b>Nghị quyết 110/2025/UBTVQH15</b> — giảm trừ bản thân 15,5tr/tháng,
+      mỗi người phụ thuộc 6,2tr/tháng.
+    </div>
+  </div>
+
+  <div class="body">
+    <div class="grid">
+
+      <fieldset>
+        <legend>Thu nhập chịu thuế / năm</legend>
+        <div id="income-list">
+          <div class="income-row">
+            <input type="text" placeholder="Tên nguồn (vd: Lương công ty A)" value="Tiền lương, tiền công">
+            <input type="text" inputmode="numeric" class="income-amt amount-input" placeholder="Số tiền/năm">
+            <button class="btn-remove" onclick="removeIncome(this)" title="Xoá">×</button>
+          </div>
+        </div>
+        <button class="btn-add" onclick="addIncome()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Thêm nguồn thu nhập
+        </button>
+        <div class="income-total">
+          <span>Tổng thu nhập chịu thuế / năm</span>
+          <b id="income-total">0 đ</b>
+        </div>
+      </fieldset>
+
+      <div class="field">
+        <label for="bhxh">Bảo hiểm bắt buộc (BHXH/BHYT/BHTN)</label>
+        <input type="text" inputmode="numeric" class="amount-input" id="bhxh" placeholder="0">
+        <div class="hint">Số đã đóng trong năm — thường ≈ 10,5% lương đóng bảo hiểm</div>
+      </div>
+
+      <div class="field">
+        <label for="dependents">Số người phụ thuộc</label>
+        <input type="number" id="dependents" min="0" step="1" value="0">
+        <div class="hint">Mỗi người được giảm trừ 74.400.000đ/năm</div>
+      </div>
+
+      <div class="field" style="grid-column: 1 / -1;">
+        <label>Tổng giảm trừ gia cảnh / năm (tự tính)</label>
+        <input type="text" class="amount-input" id="deduction" disabled value="186.000.000">
+        <div class="hint">186.000.000đ (bản thân) + người phụ thuộc × 74.400.000đ</div>
+      </div>
+
+      <button class="btn-calc" onclick="calc()">Tính thuế TNCN</button>
+    </div>
+
+    <div class="result" id="result" style="display:none">
+      <div class="result-header">
+        <div class="label">Thuế TNCN phải nộp / năm</div>
+        <div class="tax-amount" id="r_tax">0 đ</div>
+        <div class="effective-rate" id="r_rate">Thuế suất hiệu dụng: 0%</div>
+      </div>
+      <div class="result-body">
+        <div class="breakdown">
+          <div class="row"><span>Tổng thu nhập chịu thuế</span><span id="r_income"></span></div>
+          <div class="row"><span>− Bảo hiểm bắt buộc</span><span id="r_bhxh"></span></div>
+          <div class="row"><span>− Giảm trừ gia cảnh</span><span id="r_deduct"></span></div>
+          <div class="row highlight"><span>Thu nhập tính thuế</span><span id="r_taxable"></span></div>
+          <div class="row net"><span>Thu nhập sau thuế</span><span id="r_net"></span></div>
+        </div>
+
+        <div class="brackets-section">
+          <div class="brackets-title">Phân tích theo bậc thuế</div>
+          <table class="brackets" id="brk_table">
+            <thead>
+              <tr><th>Bậc</th><th>Khoảng (năm)</th><th>Thuế suất</th><th>Phần TN</th><th>Số thuế</th></tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const PERSONAL_DEDUCTION  = 186_000_000;
+  const DEPENDENT_DEDUCTION = 74_400_000;
+
+  const BRACKETS = [
+    { upTo:   120_000_000, rate: 0.05 },
+    { upTo:   360_000_000, rate: 0.10 },
+    { upTo:   720_000_000, rate: 0.20 },
+    { upTo: 1_200_000_000, rate: 0.30 },
+    { upTo: Infinity,      rate: 0.35 },
+  ];
+
+  const fmt = n => Math.round(n).toLocaleString('vi-VN') + ' đ';
+  const fmtM = n => (n/1e6).toLocaleString('vi-VN', { maximumFractionDigits: 0 });
+
+  const parseAmount = str => {
+    const digits = String(str ?? '').replace(/\D/g, '');
+    return digits ? parseInt(digits, 10) : 0;
+  };
+  const formatAmount = str => {
+    const digits = String(str ?? '').replace(/\D/g, '');
+    return digits ? digits.replace(/\B(?=(\d{3})+(?!\d))/g, '.') : '';
+  };
+
+  function attachAmountFormat(input) {
+    if (input.dataset.fmtBound) return;
+    input.dataset.fmtBound = '1';
+    input.addEventListener('input', () => {
+      const before = input.value;
+      const caret = input.selectionStart ?? before.length;
+      const digitsBeforeCaret = before.slice(0, caret).replace(/\D/g, '').length;
+      const formatted = formatAmount(before);
+      input.value = formatted;
+      if (digitsBeforeCaret === 0) {
+        input.setSelectionRange(0, 0);
+      } else {
+        let seen = 0, pos = formatted.length;
+        for (let i = 0; i < formatted.length; i++) {
+          if (/\d/.test(formatted[i])) {
+            seen++;
+            if (seen === digitsBeforeCaret) { pos = i + 1; break; }
+          }
+        }
+        input.setSelectionRange(pos, pos);
+      }
+    });
+  }
+
+  function addIncome() {
+    const list = document.getElementById('income-list');
+    const row = document.createElement('div');
+    row.className = 'income-row';
+    row.innerHTML = `
+      <input type="text" placeholder="Tên nguồn (vd: Thưởng, hợp đồng dịch vụ...)">
+      <input type="text" inputmode="numeric" class="income-amt amount-input" placeholder="Số tiền/năm">
+      <button class="btn-remove" onclick="removeIncome(this)" title="Xoá">×</button>`;
+    list.appendChild(row);
+    bindIncomeEvents();
+  }
+
+  function removeIncome(btn) {
+    const list = document.getElementById('income-list');
+    if (list.children.length <= 1) {
+      btn.closest('.income-row').querySelectorAll('input').forEach(i => i.value = '');
+    } else {
+      btn.closest('.income-row').remove();
+    }
+    updateIncomeTotal();
+  }
+
+  function updateIncomeTotal() {
+    let total = 0;
+    document.querySelectorAll('.income-amt').forEach(inp => {
+      total += parseAmount(inp.value);
+    });
+    document.getElementById('income-total').textContent = fmt(total);
+    return total;
+  }
+
+  function bindIncomeEvents() {
+    document.querySelectorAll('.income-amt').forEach(inp => {
+      attachAmountFormat(inp);
+      if (!inp.dataset.totalBound) {
+        inp.dataset.totalBound = '1';
+        inp.addEventListener('input', updateIncomeTotal);
+      }
+    });
+  }
+  bindIncomeEvents();
+  attachAmountFormat(document.getElementById('bhxh'));
+
+  document.getElementById('dependents').addEventListener('input', e => {
+    const n = Math.max(0, parseInt(e.target.value || 0));
+    document.getElementById('deduction').value = formatAmount(PERSONAL_DEDUCTION + n * DEPENDENT_DEDUCTION);
+  });
+
+  function getNum(id) {
+    return parseAmount(document.getElementById(id).value);
+  }
+
+  function calc() {
+    const income = updateIncomeTotal();
+    const bhxh = getNum('bhxh');
+    const deps = Math.max(0, parseInt(document.getElementById('dependents').value || 0));
+    const familyDeduction = PERSONAL_DEDUCTION + deps * DEPENDENT_DEDUCTION;
+
+    const taxableIncome = Math.max(0, income - bhxh - familyDeduction);
+
+    let remaining = taxableIncome;
+    let prevCap = 0;
+    let totalTax = 0;
+    const breakdown = [];
+    for (const b of BRACKETS) {
+      const slice = Math.max(0, Math.min(remaining, b.upTo - prevCap));
+      const tax = slice * b.rate;
+      breakdown.push({ from: prevCap, to: b.upTo, rate: b.rate, slice, tax, active: slice > 0 });
+      totalTax += tax;
+      remaining -= slice;
+      prevCap = b.upTo;
+    }
+
+    const effRate = income > 0 ? (totalTax / income * 100) : 0;
+
+    document.getElementById('result').style.display = 'block';
+    document.getElementById('r_income').textContent = fmt(income);
+    document.getElementById('r_bhxh').textContent = '−' + fmt(bhxh).replace('đ', 'đ');
+    document.getElementById('r_deduct').textContent = '−' + fmt(familyDeduction);
+    document.getElementById('r_taxable').textContent = fmt(taxableIncome);
+    document.getElementById('r_tax').textContent = fmt(totalTax);
+    document.getElementById('r_net').textContent = fmt(income - bhxh - totalTax);
+    document.getElementById('r_rate').textContent = `Thuế suất hiệu dụng: ${effRate.toFixed(2)}%`;
+
+    const tbody = document.querySelector('#brk_table tbody');
+    tbody.innerHTML = '';
+    breakdown.forEach((b, i) => {
+      const range = b.to === Infinity
+        ? `Trên ${fmtM(b.from)} tr`
+        : `${fmtM(b.from)} – ${fmtM(b.to)} tr`;
+      const ratePct = (b.rate * 100);
+      const tr = document.createElement('tr');
+      if (b.active) tr.classList.add('active');
+      tr.innerHTML = `
+        <td><span class="tier-badge">${i+1}</span></td>
+        <td>${range}</td>
+        <td><span class="pill pill-${ratePct}">${ratePct}%</span></td>
+        <td class="${b.slice === 0 ? 'zero' : ''}">${b.slice ? fmt(b.slice) : '—'}</td>
+        <td class="${b.tax === 0 ? 'zero' : ''}">${b.tax ? fmt(b.tax) : '—'}</td>`;
+      tbody.appendChild(tr);
+    });
+
+    document.getElementById('result').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+</script>
+</body>
+</html>
