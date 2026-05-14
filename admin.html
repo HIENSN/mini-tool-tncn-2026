@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quản trị — Luật Thuế TNCN 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-grad-1: #1e1b4b;
+    --bg-grad-2: #0f172a;
+    --card: #ffffff;
+    --card-soft: #f8fafc;
+    --border: #e2e8f0;
+    --text: #0f172a;
+    --text-soft: #475569;
+    --muted: #94a3b8;
+    --primary: #6366f1;
+    --primary-dark: #4f46e5;
+    --primary-soft: #eef2ff;
+    --accent: #ec4899;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --shadow-lg: 0 20px 50px -12px rgba(15, 23, 42, 0.25);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    background:
+      radial-gradient(1200px 600px at 10% -10%, rgba(99,102,241,0.25), transparent 60%),
+      radial-gradient(900px 500px at 100% 0%, rgba(236,72,153,0.18), transparent 60%),
+      linear-gradient(180deg, var(--bg-grad-1) 0%, var(--bg-grad-2) 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+    color: var(--text);
+    padding: 30px 20px 60px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .navbar {
+    max-width: 980px;
+    margin: 0 auto 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 16px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 14px;
+    backdrop-filter: blur(10px);
+  }
+  .navbar .brand {
+    color: #fff;
+    font-weight: 700;
+    font-size: 14px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .navbar .brand .logo {
+    width: 26px; height: 26px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 800; color: #fff;
+  }
+  .navbar nav { display: flex; gap: 6px; }
+  .navbar nav a {
+    padding: 8px 14px;
+    border-radius: 8px;
+    color: #cbd5e1;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.15s;
+  }
+  .navbar nav a:hover { background: rgba(255,255,255,0.08); color: #fff; }
+  .navbar nav a.active {
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    color: #fff;
+    font-weight: 600;
+  }
+  #logout-btn {
+    background: rgba(239,68,68,0.15);
+    border: 1px solid rgba(239,68,68,0.3);
+    color: #fca5a5;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.15s;
+  }
+  #logout-btn:hover { background: rgba(239,68,68,0.25); color: #fff; }
+
+  .login-wrap {
+    max-width: 420px;
+    margin: 80px auto;
+    background: var(--card);
+    border-radius: 18px;
+    box-shadow: var(--shadow-lg);
+    padding: 36px 32px;
+    text-align: center;
+  }
+  .login-wrap .lock-icon {
+    width: 64px; height: 64px;
+    margin: 0 auto 16px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary-soft), #fce7f3);
+    color: var(--primary-dark);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .login-wrap h2 {
+    margin: 0 0 8px;
+    font-size: 22px;
+    color: var(--text);
+  }
+  .login-wrap p {
+    color: var(--text-soft);
+    font-size: 14px;
+    margin: 0 0 24px;
+  }
+  .login-wrap input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-size: 15px;
+    font-family: inherit;
+    margin-bottom: 12px;
+    transition: all 0.15s;
+  }
+  .login-wrap input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(99,102,241,0.12);
+  }
+  .login-wrap button {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+  }
+  .login-wrap .hint {
+    margin-top: 14px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .login-wrap .error {
+    color: var(--danger);
+    font-size: 13px;
+    margin-top: -4px;
+    margin-bottom: 12px;
+    text-align: left;
+  }
+
+  .header {
+    max-width: 980px;
+    margin: 0 auto 20px;
+    color: #fff;
+  }
+  .header h1 {
+    font-size: 26px;
+    font-weight: 800;
+    margin: 0 0 4px;
+    background: linear-gradient(135deg, #fff 0%, #c7d2fe 60%, #fbcfe8 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .header p { color: #94a3b8; font-size: 13px; margin: 0; }
+
+  .wrap {
+    max-width: 980px;
+    margin: 0 auto;
+    background: var(--card);
+    border-radius: 20px;
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+  }
+
+  .toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 24px;
+    background: var(--card-soft);
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+  .toolbar .left { display: flex; gap: 8px; flex-wrap: wrap; }
+  .toolbar .right { display: flex; gap: 8px; }
+  .btn {
+    padding: 10px 16px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border: 1.5px solid transparent;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    color: #fff;
+    box-shadow: 0 4px 12px -2px rgba(99,102,241,0.4);
+  }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 16px -2px rgba(99,102,241,0.5); }
+  .btn-ghost {
+    background: #fff;
+    color: var(--text-soft);
+    border-color: var(--border);
+  }
+  .btn-ghost:hover { background: var(--primary-soft); color: var(--primary-dark); border-color: var(--primary); }
+  .btn-warn {
+    background: #fff;
+    color: #b45309;
+    border-color: #fed7aa;
+  }
+  .btn-warn:hover { background: #fef3c7; }
+  .btn-danger {
+    background: #fff;
+    color: var(--danger);
+    border-color: #fecaca;
+  }
+  .btn-danger:hover { background: #fef2f2; }
+
+  .body { padding: 24px 28px 32px; }
+
+  .section-list { display: flex; flex-direction: column; gap: 14px; }
+
+  .section-card {
+    background: var(--card-soft);
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    transition: all 0.15s;
+  }
+  .section-card:hover { border-color: #c7d2fe; }
+  .section-card.editing { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(99,102,241,0.08); }
+
+  .section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 18px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .section-head .left {
+    display: flex; align-items: center; gap: 12px;
+    flex: 1; min-width: 0;
+  }
+  .section-head .num {
+    width: 30px; height: 30px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .section-head .title {
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--text);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .section-head .actions {
+    display: flex;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+  .icon-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    width: 32px; height: 32px;
+    cursor: pointer;
+    color: var(--text-soft);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+  }
+  .icon-btn:hover { background: #fff; color: var(--primary-dark); border-color: var(--primary); }
+  .icon-btn.danger:hover { color: var(--danger); border-color: #fecaca; background: #fef2f2; }
+  .icon-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+  .section-edit { padding: 0 18px 18px; display: none; }
+  .section-card.editing .section-edit { display: block; }
+
+  .field { margin-bottom: 14px; }
+  .field label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-soft);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+  .field input[type="text"], .field textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-size: 14px;
+    font-family: inherit;
+    background: #fff;
+    color: var(--text);
+    transition: all 0.15s;
+  }
+  .field textarea {
+    font-family: 'JetBrains Mono', 'Consolas', monospace;
+    font-size: 13px;
+    min-height: 220px;
+    resize: vertical;
+    line-height: 1.55;
+  }
+  .field input:focus, .field textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(99,102,241,0.12);
+  }
+  .help {
+    font-size: 11.5px;
+    color: var(--muted);
+    margin-top: 6px;
+    line-height: 1.5;
+  }
+  .help code {
+    background: var(--primary-soft);
+    color: var(--primary-dark);
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-size: 11px;
+  }
+
+  .edit-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 10px;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 60px 30px;
+    color: var(--muted);
+  }
+  .empty-state .icon {
+    width: 56px; height: 56px;
+    margin: 0 auto 16px;
+    border-radius: 50%;
+    background: var(--card-soft);
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--text);
+    color: #fff;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 500;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.25s;
+    z-index: 1000;
+    box-shadow: var(--shadow-lg);
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  .toast.success { background: var(--success); }
+  .toast.error { background: var(--danger); }
+
+  @media (max-width: 640px) {
+    body { padding: 20px 12px 40px; }
+    .navbar { padding: 8px 12px; flex-wrap: wrap; }
+    .navbar nav a { padding: 6px 10px; font-size: 12px; }
+    .body { padding: 18px; }
+    .toolbar { padding: 12px 16px; }
+    .section-head { padding: 12px 14px; }
+    .section-edit { padding: 0 14px 14px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="brand"><span class="logo">T</span> TNCN 2026 — Admin</div>
+  <nav>
+    <a href="index.html">Tính thuế</a>
+    <a href="luat.html">Luật TNCN</a>
+    <a href="admin.html" class="active">Admin</a>
+  </nav>
+</div>
+
+<div id="login-screen" class="login-wrap" style="display:none">
+  <div class="lock-icon">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+  </div>
+  <h2>Đăng nhập quản trị</h2>
+  <p>Nhập mật khẩu để truy cập trang chỉnh sửa nội dung luật.</p>
+  <form id="login-form">
+    <input type="password" id="password" placeholder="Mật khẩu" autofocus>
+    <div class="error" id="login-error" style="display:none"></div>
+    <button type="submit">Đăng nhập</button>
+  </form>
+  <div class="hint">Mật khẩu mặc định: <b>admin123</b> — đổi tại biến <code>ADMIN_PASSWORD</code> trong mã nguồn.</div>
+</div>
+
+<div id="admin-screen" style="display:none">
+  <div class="header" style="display:flex; justify-content:space-between; align-items:flex-end; gap:16px;">
+    <div>
+      <h1>Quản trị nội dung luật</h1>
+      <p>Thêm, sửa, xoá và sắp xếp các điều khoản hiển thị trên trang Luật TNCN.</p>
+    </div>
+    <button id="logout-btn" type="button">Đăng xuất</button>
+  </div>
+
+  <div class="wrap">
+    <div class="toolbar">
+      <div class="left">
+        <button class="btn btn-primary" id="btn-add">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Thêm mục mới
+        </button>
+        <button class="btn btn-ghost" id="btn-export">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Xuất JSON
+        </button>
+        <label class="btn btn-ghost" for="import-file" style="margin:0;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          Nhập JSON
+        </label>
+        <input type="file" id="import-file" accept="application/json" style="display:none">
+      </div>
+      <div class="right">
+        <button class="btn btn-warn" id="btn-reset">Khôi phục mặc định</button>
+      </div>
+    </div>
+
+    <div class="body">
+      <div id="section-list" class="section-list"></div>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+  const STORAGE_KEY = 'tncn_law_sections_v1';
+  const AUTH_KEY = 'tncn_admin_auth';
+  const ADMIN_PASSWORD = 'admin123';
+
+  const DEFAULT_SECTIONS = [
+    { id: 's1', title: 'Cơ sở pháp lý', content: `<p>Các văn bản pháp luật áp dụng cho việc tính thuế TNCN từ <b>01/01/2026</b>:</p>\n<ul>\n  <li><b>Luật Thuế TNCN số 109/2025/QH15</b> ban hành ngày 25/11/2025 — quy định biểu thuế lũy tiến từng phần mới gồm 5 bậc.</li>\n  <li><b>Nghị quyết số 110/2025/UBTVQH15</b> — điều chỉnh mức giảm trừ gia cảnh.</li>\n  <li><b>Nghị định hướng dẫn</b> của Chính phủ và <b>Thông tư</b> của Bộ Tài chính.</li>\n</ul>\n<blockquote>Luật mới thay thế Luật Thuế TNCN năm 2007 (sửa đổi 2012, 2014) và các văn bản hướng dẫn trước đây.</blockquote>` },
+    { id: 's2', title: 'Đối tượng nộp thuế', content: `<p>Đối tượng nộp thuế TNCN bao gồm:</p>\n<ol>\n  <li><b>Cá nhân cư trú</b> có thu nhập chịu thuế phát sinh trong và ngoài lãnh thổ Việt Nam.</li>\n  <li><b>Cá nhân không cư trú</b> có thu nhập chịu thuế phát sinh trong lãnh thổ Việt Nam.</li>\n</ol>\n<h3>Cá nhân cư trú là người đáp ứng một trong các điều kiện:</h3>\n<ul>\n  <li>Có mặt tại Việt Nam từ <b>183 ngày trở lên</b> trong một năm dương lịch hoặc 12 tháng liên tục.</li>\n  <li>Có nơi ở thường xuyên tại Việt Nam (đăng ký thường trú hoặc nhà thuê ≥ 183 ngày/năm).</li>\n</ul>` },
+    { id: 's3', title: 'Thu nhập chịu thuế', content: `<p>Thu nhập chịu thuế TNCN gồm 10 loại chính:</p>\n<ol>\n  <li>Thu nhập từ <b>kinh doanh</b></li>\n  <li>Thu nhập từ <b>tiền lương, tiền công</b></li>\n  <li>Thu nhập từ <b>đầu tư vốn</b> (lãi cho vay, lợi tức cổ phần...)</li>\n  <li>Thu nhập từ <b>chuyển nhượng vốn</b></li>\n  <li>Thu nhập từ <b>chuyển nhượng bất động sản</b></li>\n  <li>Thu nhập từ <b>trúng thưởng</b></li>\n  <li>Thu nhập từ <b>bản quyền</b></li>\n  <li>Thu nhập từ <b>nhượng quyền thương mại</b></li>\n  <li>Thu nhập từ <b>nhận thừa kế</b> (chứng khoán, vốn, bất động sản...)</li>\n  <li>Thu nhập từ <b>nhận quà tặng</b> (chứng khoán, vốn, bất động sản...)</li>\n</ol>` },
+    { id: 's4', title: 'Giảm trừ gia cảnh', content: `<p>Theo <b>Nghị quyết 110/2025/UBTVQH15</b>, mức giảm trừ gia cảnh áp dụng từ kỳ tính thuế 2026:</p>\n<table>\n  <thead>\n    <tr><th>Khoản giảm trừ</th><th>Mức / tháng</th><th>Mức / năm</th></tr>\n  </thead>\n  <tbody>\n    <tr><td>Giảm trừ cho bản thân người nộp thuế</td><td><b>15.500.000 đ</b></td><td><b>186.000.000 đ</b></td></tr>\n    <tr><td>Giảm trừ cho mỗi người phụ thuộc</td><td><b>6.200.000 đ</b></td><td><b>74.400.000 đ</b></td></tr>\n  </tbody>\n</table>\n<p>Ngoài ra, người nộp thuế còn được trừ:</p>\n<ul>\n  <li>Các khoản <b>bảo hiểm bắt buộc</b>: BHXH (8%), BHYT (1,5%), BHTN (1%) — tổng cộng 10,5% lương đóng bảo hiểm.</li>\n  <li>Khoản đóng vào <b>quỹ hưu trí tự nguyện</b> (tối đa 1 triệu đồng/tháng).</li>\n  <li>Khoản đóng góp <b>từ thiện, nhân đạo, khuyến học</b> (có chứng từ hợp lệ).</li>\n</ul>` },
+    { id: 's5', title: 'Biểu thuế lũy tiến từng phần (5 bậc)', content: `<p>Áp dụng cho <b>thu nhập từ tiền lương, tiền công</b> của cá nhân cư trú:</p>\n<table>\n  <thead>\n    <tr><th>Bậc</th><th>Thu nhập tính thuế / năm</th><th>Thu nhập tính thuế / tháng</th><th>Thuế suất</th></tr>\n  </thead>\n  <tbody>\n    <tr><td><b>1</b></td><td>Đến 120 triệu</td><td>Đến 10 triệu</td><td><b>5%</b></td></tr>\n    <tr><td><b>2</b></td><td>Trên 120 — 360 triệu</td><td>Trên 10 — 30 triệu</td><td><b>10%</b></td></tr>\n    <tr><td><b>3</b></td><td>Trên 360 — 720 triệu</td><td>Trên 30 — 60 triệu</td><td><b>20%</b></td></tr>\n    <tr><td><b>4</b></td><td>Trên 720 — 1.200 triệu</td><td>Trên 60 — 100 triệu</td><td><b>30%</b></td></tr>\n    <tr><td><b>5</b></td><td>Trên 1.200 triệu</td><td>Trên 100 triệu</td><td><b>35%</b></td></tr>\n  </tbody>\n</table>\n<blockquote>So với biểu thuế cũ (7 bậc), biểu thuế mới <b>gọn hơn, giãn khoảng cách giữa các bậc</b>, giảm gánh nặng thuế cho người có thu nhập trung bình.</blockquote>` },
+    { id: 's6', title: 'Cách tính thuế', content: `<p>Công thức tổng quát:</p>\n<blockquote><b>Thuế TNCN = Thu nhập tính thuế × Thuế suất</b><br><b>Thu nhập tính thuế = Tổng thu nhập − BH bắt buộc − Giảm trừ gia cảnh − Các khoản miễn thuế</b></blockquote>\n<h3>Ví dụ minh hoạ:</h3>\n<p>Anh A có thu nhập 30 triệu/tháng (360 triệu/năm), 1 người phụ thuộc, đóng BHXH 31,5 triệu/năm:</p>\n<ul>\n  <li>Giảm trừ bản thân: <b>186.000.000 đ</b></li>\n  <li>Giảm trừ 1 người phụ thuộc: <b>74.400.000 đ</b></li>\n  <li>BHXH: <b>31.500.000 đ</b></li>\n  <li>Thu nhập tính thuế = 360.000.000 − 186.000.000 − 74.400.000 − 31.500.000 = <b>68.100.000 đ</b></li>\n  <li>Thuế phải nộp (bậc 1, 5%) = 68.100.000 × 5% = <b>3.405.000 đ/năm</b></li>\n</ul>` },
+    { id: 's7', title: 'Người phụ thuộc', content: `<p>Người phụ thuộc là người mà người nộp thuế có nghĩa vụ nuôi dưỡng, gồm:</p>\n<ul>\n  <li><b>Con</b>: con dưới 18 tuổi, hoặc con từ 18 tuổi trở lên bị khuyết tật/không có khả năng lao động, hoặc con đang học đại học/cao đẳng/trung học chuyên nghiệp/dạy nghề và không có thu nhập hoặc có thu nhập bình quân tháng ≤ <b>1 triệu đồng</b>.</li>\n  <li><b>Vợ/chồng</b>: không có khả năng lao động hoặc có thu nhập bình quân tháng ≤ 1 triệu đồng.</li>\n  <li><b>Cha mẹ đẻ, cha mẹ vợ/chồng, cha mẹ nuôi hợp pháp</b>: ngoài tuổi lao động hoặc trong tuổi lao động nhưng bị khuyết tật/không có khả năng lao động.</li>\n  <li><b>Người khác</b> mà người nộp thuế phải trực tiếp nuôi dưỡng.</li>\n</ul>\n<blockquote>Mỗi người phụ thuộc <b>chỉ được tính giảm trừ một lần cho một người nộp thuế</b> trong năm tính thuế.</blockquote>` },
+    { id: 's8', title: 'Các khoản thu nhập được miễn thuế', content: `<p>Một số khoản thu nhập được miễn thuế TNCN, gồm:</p>\n<ul>\n  <li>Thu nhập từ chuyển nhượng bất động sản giữa <b>vợ và chồng, cha mẹ và con, ông bà và cháu, anh chị em ruột</b>.</li>\n  <li>Thu nhập từ chuyển nhượng <b>nhà ở duy nhất</b> (đáp ứng điều kiện sở hữu ≥ 6 tháng).</li>\n  <li>Thu nhập từ <b>lãi tiền gửi</b> tại ngân hàng, tổ chức tín dụng; lãi trái phiếu Chính phủ.</li>\n  <li>Thu nhập từ <b>kiều hối</b>.</li>\n  <li>Phần tiền lương làm việc <b>ban đêm, làm thêm giờ</b> được trả cao hơn so với ban ngày, giờ tiêu chuẩn.</li>\n  <li>Tiền <b>lương hưu</b> do Quỹ BHXH chi trả; lương hưu do quỹ hưu trí tự nguyện chi trả hàng tháng.</li>\n  <li>Học bổng nhận từ ngân sách nhà nước hoặc tổ chức trong và ngoài nước.</li>\n  <li>Tiền <b>bồi thường</b> bảo hiểm, tai nạn lao động, trợ cấp một lần khi sinh con, nuôi con nuôi...</li>\n</ul>` },
+    { id: 's9', title: 'Quyết toán thuế TNCN', content: `<p>Cá nhân có nghĩa vụ quyết toán thuế TNCN nếu:</p>\n<ul>\n  <li>Có số thuế phải nộp thêm so với số đã tạm nộp.</li>\n  <li>Có yêu cầu hoàn thuế hoặc bù trừ vào kỳ tiếp theo.</li>\n</ul>\n<h3>Thời hạn quyết toán:</h3>\n<ul>\n  <li><b>Cá nhân tự quyết toán</b>: chậm nhất là <b>cuối tháng 4</b> năm sau.</li>\n  <li><b>Tổ chức trả thu nhập quyết toán thay</b>: chậm nhất là <b>cuối tháng 3</b> năm sau.</li>\n</ul>\n<blockquote>Cá nhân có thể uỷ quyền cho tổ chức trả thu nhập quyết toán thay nếu chỉ có một nguồn thu nhập từ tiền lương, tiền công.</blockquote>` }
+  ];
+
+  let sections = [];
+
+  function loadSections() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed)) return parsed;
+      }
+    } catch (e) { console.warn(e); }
+    return JSON.parse(JSON.stringify(DEFAULT_SECTIONS));
+  }
+
+  function saveSections() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(sections));
+  }
+
+  function newId() {
+    return 's' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+  }
+
+  function escapeHtml(str) {
+    return String(str ?? '').replace(/[&<>"']/g, c => ({
+      '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+    }[c]));
+  }
+
+  function toast(msg, type='') {
+    const el = document.getElementById('toast');
+    el.className = 'toast show ' + type;
+    el.textContent = msg;
+    setTimeout(() => el.className = 'toast', 2200);
+  }
+
+  function render() {
+    const list = document.getElementById('section-list');
+    if (!sections.length) {
+      list.innerHTML = `
+        <div class="empty-state">
+          <div class="icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          </div>
+          <p>Chưa có mục nào. Nhấn <b>Thêm mục mới</b> để bắt đầu.</p>
+        </div>`;
+      return;
+    }
+    list.innerHTML = sections.map((s, i) => `
+      <div class="section-card" data-id="${s.id}">
+        <div class="section-head">
+          <div class="left">
+            <div class="num">${i+1}</div>
+            <div class="title">${escapeHtml(s.title) || '<em>(chưa có tiêu đề)</em>'}</div>
+          </div>
+          <div class="actions">
+            <button class="icon-btn" data-act="up" ${i===0?'disabled':''} title="Lên">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="18 15 12 9 6 15"/></svg>
+            </button>
+            <button class="icon-btn" data-act="down" ${i===sections.length-1?'disabled':''} title="Xuống">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <button class="icon-btn" data-act="edit" title="Sửa">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            </button>
+            <button class="icon-btn danger" data-act="delete" title="Xoá">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="section-edit">
+          <div class="field">
+            <label>Tiêu đề</label>
+            <input type="text" data-field="title" value="${escapeHtml(s.title)}">
+          </div>
+          <div class="field">
+            <label>Nội dung (HTML)</label>
+            <textarea data-field="content" spellcheck="false">${escapeHtml(s.content)}</textarea>
+            <div class="help">
+              Hỗ trợ thẻ HTML cơ bản: <code>&lt;p&gt;</code>, <code>&lt;ul&gt;</code>/<code>&lt;ol&gt;</code>, <code>&lt;li&gt;</code>,
+              <code>&lt;b&gt;</code>, <code>&lt;h3&gt;</code>, <code>&lt;table&gt;</code>, <code>&lt;blockquote&gt;</code>.
+            </div>
+          </div>
+          <div class="edit-actions">
+            <button class="btn btn-ghost" data-act="cancel">Huỷ</button>
+            <button class="btn btn-primary" data-act="save">Lưu thay đổi</button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  document.getElementById('section-list').addEventListener('click', e => {
+    const btn = e.target.closest('[data-act]');
+    if (!btn) return;
+    const card = btn.closest('.section-card');
+    const id = card.dataset.id;
+    const idx = sections.findIndex(s => s.id === id);
+    if (idx < 0) return;
+    const act = btn.dataset.act;
+
+    if (act === 'up' && idx > 0) {
+      [sections[idx-1], sections[idx]] = [sections[idx], sections[idx-1]];
+      saveSections(); render(); toast('Đã di chuyển lên', 'success');
+    } else if (act === 'down' && idx < sections.length-1) {
+      [sections[idx+1], sections[idx]] = [sections[idx], sections[idx+1]];
+      saveSections(); render(); toast('Đã di chuyển xuống', 'success');
+    } else if (act === 'edit') {
+      document.querySelectorAll('.section-card.editing').forEach(c => {
+        if (c !== card) c.classList.remove('editing');
+      });
+      card.classList.toggle('editing');
+    } else if (act === 'cancel') {
+      card.classList.remove('editing');
+      render();
+    } else if (act === 'save') {
+      sections[idx].title = card.querySelector('[data-field="title"]').value.trim();
+      sections[idx].content = card.querySelector('[data-field="content"]').value;
+      saveSections(); render(); toast('Đã lưu thay đổi', 'success');
+    } else if (act === 'delete') {
+      if (confirm(`Xoá mục "${sections[idx].title}"? Hành động này không thể hoàn tác.`)) {
+        sections.splice(idx, 1);
+        saveSections(); render(); toast('Đã xoá mục', 'success');
+      }
+    }
+  });
+
+  document.getElementById('btn-add').addEventListener('click', () => {
+    sections.push({
+      id: newId(),
+      title: 'Mục mới',
+      content: '<p>Nhập nội dung điều khoản tại đây...</p>'
+    });
+    saveSections(); render();
+    const last = document.querySelector('.section-card:last-child');
+    if (last) {
+      last.classList.add('editing');
+      last.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      last.querySelector('[data-field="title"]').focus();
+      last.querySelector('[data-field="title"]').select();
+    }
+  });
+
+  document.getElementById('btn-export').addEventListener('click', () => {
+    const data = JSON.stringify(sections, null, 2);
+    const blob = new Blob([data], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `luat-tncn-${new Date().toISOString().slice(0,10)}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast('Đã xuất file JSON', 'success');
+  });
+
+  document.getElementById('import-file').addEventListener('change', e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      try {
+        const data = JSON.parse(ev.target.result);
+        if (!Array.isArray(data)) throw new Error('Dữ liệu không hợp lệ');
+        const cleaned = data
+          .filter(x => x && typeof x === 'object')
+          .map(x => ({
+            id: x.id || newId(),
+            title: String(x.title || ''),
+            content: String(x.content || '')
+          }));
+        if (!cleaned.length) throw new Error('File rỗng');
+        if (!confirm(`Nhập ${cleaned.length} mục từ file? Toàn bộ dữ liệu hiện tại sẽ bị thay thế.`)) return;
+        sections = cleaned;
+        saveSections(); render(); toast('Đã nhập dữ liệu', 'success');
+      } catch (err) {
+        toast('Lỗi đọc file: ' + err.message, 'error');
+      }
+      e.target.value = '';
+    };
+    reader.readAsText(file);
+  });
+
+  document.getElementById('btn-reset').addEventListener('click', () => {
+    if (!confirm('Khôi phục về nội dung mặc định? Toàn bộ chỉnh sửa hiện tại sẽ mất.')) return;
+    sections = JSON.parse(JSON.stringify(DEFAULT_SECTIONS));
+    saveSections(); render(); toast('Đã khôi phục mặc định', 'success');
+  });
+
+  function isLoggedIn() {
+    return sessionStorage.getItem(AUTH_KEY) === '1';
+  }
+  function showLogin() {
+    document.getElementById('login-screen').style.display = '';
+    document.getElementById('admin-screen').style.display = 'none';
+  }
+  function showAdmin() {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('admin-screen').style.display = '';
+    sections = loadSections();
+    render();
+  }
+
+  document.getElementById('login-form').addEventListener('submit', e => {
+    e.preventDefault();
+    const pwd = document.getElementById('password').value;
+    if (pwd === ADMIN_PASSWORD) {
+      sessionStorage.setItem(AUTH_KEY, '1');
+      showAdmin();
+    } else {
+      const err = document.getElementById('login-error');
+      err.textContent = 'Mật khẩu không đúng. Vui lòng thử lại.';
+      err.style.display = '';
+      document.getElementById('password').select();
+    }
+  });
+
+  document.getElementById('logout-btn').addEventListener('click', () => {
+    sessionStorage.removeItem(AUTH_KEY);
+    document.getElementById('password').value = '';
+    document.getElementById('login-error').style.display = 'none';
+    showLogin();
+  });
+
+  if (isLoggedIn()) showAdmin();
+  else showLogin();
+</script>
+</body>
+</html>

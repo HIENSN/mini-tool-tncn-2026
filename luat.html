@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Luật Thuế TNCN 2026 — Tổng hợp quy định</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-grad-1: #1e1b4b;
+    --bg-grad-2: #0f172a;
+    --card: #ffffff;
+    --card-soft: #f8fafc;
+    --border: #e2e8f0;
+    --text: #0f172a;
+    --text-soft: #475569;
+    --muted: #94a3b8;
+    --primary: #6366f1;
+    --primary-dark: #4f46e5;
+    --primary-soft: #eef2ff;
+    --accent: #ec4899;
+    --success: #10b981;
+    --shadow-lg: 0 20px 50px -12px rgba(15, 23, 42, 0.25);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    background:
+      radial-gradient(1200px 600px at 10% -10%, rgba(99,102,241,0.25), transparent 60%),
+      radial-gradient(900px 500px at 100% 0%, rgba(236,72,153,0.18), transparent 60%),
+      linear-gradient(180deg, var(--bg-grad-1) 0%, var(--bg-grad-2) 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+    color: var(--text);
+    padding: 30px 20px 60px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .navbar {
+    max-width: 920px;
+    margin: 0 auto 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 16px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 14px;
+    backdrop-filter: blur(10px);
+  }
+  .navbar .brand {
+    color: #fff;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.2px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .navbar .brand .logo {
+    width: 26px; height: 26px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 800; color: #fff;
+  }
+  .navbar nav { display: flex; gap: 6px; }
+  .navbar nav a {
+    padding: 8px 14px;
+    border-radius: 8px;
+    color: #cbd5e1;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.15s;
+  }
+  .navbar nav a:hover { background: rgba(255,255,255,0.08); color: #fff; }
+  .navbar nav a.active {
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    color: #fff;
+    font-weight: 600;
+  }
+
+  .header {
+    max-width: 920px;
+    margin: 0 auto 24px;
+    color: #fff;
+    text-align: center;
+  }
+  .badge-top {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 14px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 999px;
+    font-size: 12px;
+    color: #cbd5e1;
+  }
+  .badge-top .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--success);
+    box-shadow: 0 0 8px var(--success);
+  }
+  .header h1 {
+    font-size: 34px;
+    font-weight: 800;
+    letter-spacing: -0.6px;
+    margin: 14px 0 6px;
+    background: linear-gradient(135deg, #fff 0%, #c7d2fe 60%, #fbcfe8 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .header .tagline { color: #94a3b8; font-size: 14px; margin: 0; }
+
+  .wrap {
+    max-width: 920px;
+    margin: 0 auto;
+    background: var(--card);
+    border-radius: 20px;
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+  }
+
+  .toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 24px;
+    background: linear-gradient(135deg, #eef2ff 0%, #fce7f3 100%);
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+  .toolbar .info {
+    font-size: 13px;
+    color: #3730a3;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .toolbar .info b { color: #1e1b4b; }
+  .search {
+    position: relative;
+    min-width: 240px;
+    flex: 1; max-width: 320px;
+  }
+  .search input {
+    width: 100%;
+    padding: 10px 14px 10px 38px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-size: 14px;
+    font-family: inherit;
+    background: #fff;
+    transition: all 0.15s;
+  }
+  .search input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(99,102,241,0.12);
+  }
+  .search svg {
+    position: absolute; left: 12px; top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+  }
+
+  .toc {
+    padding: 20px 32px;
+    background: var(--card-soft);
+    border-bottom: 1px solid var(--border);
+  }
+  .toc-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    margin-bottom: 10px;
+  }
+  .toc-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 8px;
+    list-style: none;
+    padding: 0; margin: 0;
+  }
+  .toc-list a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--text-soft);
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.15s;
+  }
+  .toc-list a:hover {
+    border-color: var(--primary);
+    color: var(--primary-dark);
+    background: var(--primary-soft);
+  }
+  .toc-list a .num {
+    width: 22px; height: 22px;
+    border-radius: 6px;
+    background: var(--primary-soft);
+    color: var(--primary-dark);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .sections {
+    padding: 28px 32px 36px;
+  }
+
+  .section {
+    margin-bottom: 22px;
+    padding: 24px 26px;
+    background: var(--card-soft);
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    scroll-margin-top: 20px;
+    transition: all 0.2s;
+  }
+  .section.hidden { display: none; }
+  .section:hover { border-color: #c7d2fe; }
+  .section h2 {
+    margin: 0 0 14px;
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section h2 .badge {
+    width: 32px; height: 32px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 700;
+    flex-shrink: 0;
+  }
+  .section .content {
+    font-size: 14.5px;
+    line-height: 1.7;
+    color: var(--text-soft);
+  }
+  .section .content h3 {
+    font-size: 15px;
+    color: var(--text);
+    margin: 16px 0 8px;
+  }
+  .section .content p { margin: 0 0 10px; }
+  .section .content ul, .section .content ol { padding-left: 22px; margin: 0 0 10px; }
+  .section .content li { margin-bottom: 4px; }
+  .section .content b, .section .content strong { color: var(--text); }
+  .section .content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 13px;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .section .content th {
+    background: var(--primary-soft);
+    color: var(--primary-dark);
+    padding: 10px 12px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+  .section .content td {
+    padding: 10px 12px;
+    border-top: 1px solid var(--border);
+  }
+  .section .content blockquote {
+    border-left: 3px solid var(--primary);
+    background: #fff;
+    padding: 10px 14px;
+    margin: 12px 0;
+    color: var(--text);
+    border-radius: 0 8px 8px 0;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 60px 30px;
+    color: var(--muted);
+  }
+  .empty-state .icon {
+    width: 56px; height: 56px;
+    margin: 0 auto 16px;
+    border-radius: 50%;
+    background: var(--card-soft);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--muted);
+  }
+
+  .footer {
+    max-width: 920px;
+    margin: 24px auto 0;
+    text-align: center;
+    color: #94a3b8;
+    font-size: 12px;
+  }
+  .footer a { color: #c7d2fe; text-decoration: none; }
+
+  @media (max-width: 640px) {
+    body { padding: 20px 12px 40px; }
+    .navbar { padding: 8px 12px; flex-wrap: wrap; gap: 8px; }
+    .navbar nav a { padding: 6px 10px; font-size: 12px; }
+    .header h1 { font-size: 24px; }
+    .sections { padding: 20px 18px; }
+    .section { padding: 18px; }
+    .toolbar { padding: 12px 16px; }
+    .toc { padding: 16px 18px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="brand"><span class="logo">T</span> TNCN 2026</div>
+  <nav>
+    <a href="index.html">Tính thuế</a>
+    <a href="luat.html" class="active">Luật TNCN</a>
+    <a href="admin.html">Admin</a>
+  </nav>
+</div>
+
+<div class="header">
+  <div class="badge-top"><span class="dot"></span> Tổng hợp các quy định Luật Thuế TNCN áp dụng từ 01/01/2026</div>
+  <h1>Luật Thuế Thu nhập Cá nhân</h1>
+  <p class="tagline">Tra cứu nhanh các điều khoản, biểu thuế và mức giảm trừ mới nhất</p>
+</div>
+
+<div class="wrap">
+  <div class="toolbar">
+    <div class="info">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+      Nội dung được quản trị viên cập nhật — căn cứ <b>Luật số 109/2025/QH15</b>
+    </div>
+    <div class="search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="search" placeholder="Tìm trong các điều luật...">
+    </div>
+  </div>
+
+  <div class="toc" id="toc-wrap">
+    <div class="toc-title">Mục lục</div>
+    <ul class="toc-list" id="toc"></ul>
+  </div>
+
+  <div class="sections" id="sections"></div>
+</div>
+
+<div class="footer">
+  Dữ liệu trang này được lưu cục bộ trong trình duyệt (localStorage).
+  Quản trị viên có thể cập nhật tại <a href="admin.html">trang Admin</a>.
+</div>
+
+<script>
+  const STORAGE_KEY = 'tncn_law_sections_v1';
+
+  const DEFAULT_SECTIONS = [
+    {
+      id: 's1',
+      title: 'Cơ sở pháp lý',
+      content: `
+        <p>Các văn bản pháp luật áp dụng cho việc tính thuế TNCN từ <b>01/01/2026</b>:</p>
+        <ul>
+          <li><b>Luật Thuế TNCN số 109/2025/QH15</b> ban hành ngày 25/11/2025 — quy định biểu thuế lũy tiến từng phần mới gồm 5 bậc.</li>
+          <li><b>Nghị quyết số 110/2025/UBTVQH15</b> — điều chỉnh mức giảm trừ gia cảnh.</li>
+          <li><b>Nghị định hướng dẫn</b> của Chính phủ và <b>Thông tư</b> của Bộ Tài chính.</li>
+        </ul>
+        <blockquote>
+          Luật mới thay thế Luật Thuế TNCN năm 2007 (sửa đổi 2012, 2014) và các văn bản hướng dẫn trước đây.
+        </blockquote>
+      `
+    },
+    {
+      id: 's2',
+      title: 'Đối tượng nộp thuế',
+      content: `
+        <p>Đối tượng nộp thuế TNCN bao gồm:</p>
+        <ol>
+          <li><b>Cá nhân cư trú</b> có thu nhập chịu thuế phát sinh trong và ngoài lãnh thổ Việt Nam.</li>
+          <li><b>Cá nhân không cư trú</b> có thu nhập chịu thuế phát sinh trong lãnh thổ Việt Nam.</li>
+        </ol>
+        <h3>Cá nhân cư trú là người đáp ứng một trong các điều kiện:</h3>
+        <ul>
+          <li>Có mặt tại Việt Nam từ <b>183 ngày trở lên</b> trong một năm dương lịch hoặc 12 tháng liên tục.</li>
+          <li>Có nơi ở thường xuyên tại Việt Nam (đăng ký thường trú hoặc nhà thuê ≥ 183 ngày/năm).</li>
+        </ul>
+      `
+    },
+    {
+      id: 's3',
+      title: 'Thu nhập chịu thuế',
+      content: `
+        <p>Thu nhập chịu thuế TNCN gồm 10 loại chính:</p>
+        <ol>
+          <li>Thu nhập từ <b>kinh doanh</b></li>
+          <li>Thu nhập từ <b>tiền lương, tiền công</b></li>
+          <li>Thu nhập từ <b>đầu tư vốn</b> (lãi cho vay, lợi tức cổ phần...)</li>
+          <li>Thu nhập từ <b>chuyển nhượng vốn</b></li>
+          <li>Thu nhập từ <b>chuyển nhượng bất động sản</b></li>
+          <li>Thu nhập từ <b>trúng thưởng</b></li>
+          <li>Thu nhập từ <b>bản quyền</b></li>
+          <li>Thu nhập từ <b>nhượng quyền thương mại</b></li>
+          <li>Thu nhập từ <b>nhận thừa kế</b> (chứng khoán, vốn, bất động sản...)</li>
+          <li>Thu nhập từ <b>nhận quà tặng</b> (chứng khoán, vốn, bất động sản...)</li>
+        </ol>
+      `
+    },
+    {
+      id: 's4',
+      title: 'Giảm trừ gia cảnh',
+      content: `
+        <p>Theo <b>Nghị quyết 110/2025/UBTVQH15</b>, mức giảm trừ gia cảnh áp dụng từ kỳ tính thuế 2026:</p>
+        <table>
+          <thead>
+            <tr><th>Khoản giảm trừ</th><th>Mức / tháng</th><th>Mức / năm</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Giảm trừ cho bản thân người nộp thuế</td><td><b>15.500.000 đ</b></td><td><b>186.000.000 đ</b></td></tr>
+            <tr><td>Giảm trừ cho mỗi người phụ thuộc</td><td><b>6.200.000 đ</b></td><td><b>74.400.000 đ</b></td></tr>
+          </tbody>
+        </table>
+        <p>Ngoài ra, người nộp thuế còn được trừ:</p>
+        <ul>
+          <li>Các khoản <b>bảo hiểm bắt buộc</b>: BHXH (8%), BHYT (1,5%), BHTN (1%) — tổng cộng 10,5% lương đóng bảo hiểm.</li>
+          <li>Khoản đóng vào <b>quỹ hưu trí tự nguyện</b> (tối đa 1 triệu đồng/tháng).</li>
+          <li>Khoản đóng góp <b>từ thiện, nhân đạo, khuyến học</b> (có chứng từ hợp lệ).</li>
+        </ul>
+      `
+    },
+    {
+      id: 's5',
+      title: 'Biểu thuế lũy tiến từng phần (5 bậc)',
+      content: `
+        <p>Áp dụng cho <b>thu nhập từ tiền lương, tiền công</b> của cá nhân cư trú:</p>
+        <table>
+          <thead>
+            <tr>
+              <th>Bậc</th>
+              <th>Thu nhập tính thuế / năm</th>
+              <th>Thu nhập tính thuế / tháng</th>
+              <th>Thuế suất</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><b>1</b></td><td>Đến 120 triệu</td><td>Đến 10 triệu</td><td><b>5%</b></td></tr>
+            <tr><td><b>2</b></td><td>Trên 120 — 360 triệu</td><td>Trên 10 — 30 triệu</td><td><b>10%</b></td></tr>
+            <tr><td><b>3</b></td><td>Trên 360 — 720 triệu</td><td>Trên 30 — 60 triệu</td><td><b>20%</b></td></tr>
+            <tr><td><b>4</b></td><td>Trên 720 — 1.200 triệu</td><td>Trên 60 — 100 triệu</td><td><b>30%</b></td></tr>
+            <tr><td><b>5</b></td><td>Trên 1.200 triệu</td><td>Trên 100 triệu</td><td><b>35%</b></td></tr>
+          </tbody>
+        </table>
+        <blockquote>
+          So với biểu thuế cũ (7 bậc), biểu thuế mới <b>gọn hơn, giãn khoảng cách giữa các bậc</b>, giảm gánh nặng thuế cho người có thu nhập trung bình.
+        </blockquote>
+      `
+    },
+    {
+      id: 's6',
+      title: 'Cách tính thuế',
+      content: `
+        <p>Công thức tổng quát:</p>
+        <blockquote>
+          <b>Thuế TNCN = Thu nhập tính thuế × Thuế suất</b><br>
+          <b>Thu nhập tính thuế = Tổng thu nhập − BH bắt buộc − Giảm trừ gia cảnh − Các khoản miễn thuế</b>
+        </blockquote>
+        <h3>Ví dụ minh hoạ:</h3>
+        <p>Anh A có thu nhập 30 triệu/tháng (360 triệu/năm), 1 người phụ thuộc, đóng BHXH 31,5 triệu/năm:</p>
+        <ul>
+          <li>Giảm trừ bản thân: <b>186.000.000 đ</b></li>
+          <li>Giảm trừ 1 người phụ thuộc: <b>74.400.000 đ</b></li>
+          <li>BHXH: <b>31.500.000 đ</b></li>
+          <li>Thu nhập tính thuế = 360.000.000 − 186.000.000 − 74.400.000 − 31.500.000 = <b>68.100.000 đ</b></li>
+          <li>Thuế phải nộp (bậc 1, 5%) = 68.100.000 × 5% = <b>3.405.000 đ/năm</b></li>
+        </ul>
+      `
+    },
+    {
+      id: 's7',
+      title: 'Người phụ thuộc',
+      content: `
+        <p>Người phụ thuộc là người mà người nộp thuế có nghĩa vụ nuôi dưỡng, gồm:</p>
+        <ul>
+          <li><b>Con</b>: con dưới 18 tuổi, hoặc con từ 18 tuổi trở lên bị khuyết tật/không có khả năng lao động, hoặc con đang học đại học/cao đẳng/trung học chuyên nghiệp/dạy nghề và không có thu nhập hoặc có thu nhập bình quân tháng ≤ <b>1 triệu đồng</b>.</li>
+          <li><b>Vợ/chồng</b>: không có khả năng lao động hoặc có thu nhập bình quân tháng ≤ 1 triệu đồng.</li>
+          <li><b>Cha mẹ đẻ, cha mẹ vợ/chồng, cha mẹ nuôi hợp pháp</b>: ngoài tuổi lao động hoặc trong tuổi lao động nhưng bị khuyết tật/không có khả năng lao động.</li>
+          <li><b>Người khác</b> mà người nộp thuế phải trực tiếp nuôi dưỡng (anh, chị, em ruột; ông bà; cô, dì, chú, bác ruột; cháu ruột; người phải nuôi dưỡng theo pháp luật).</li>
+        </ul>
+        <blockquote>
+          Mỗi người phụ thuộc <b>chỉ được tính giảm trừ một lần cho một người nộp thuế</b> trong năm tính thuế.
+        </blockquote>
+      `
+    },
+    {
+      id: 's8',
+      title: 'Các khoản thu nhập được miễn thuế',
+      content: `
+        <p>Một số khoản thu nhập được miễn thuế TNCN, gồm:</p>
+        <ul>
+          <li>Thu nhập từ chuyển nhượng bất động sản giữa <b>vợ và chồng, cha mẹ và con, ông bà và cháu, anh chị em ruột</b>.</li>
+          <li>Thu nhập từ chuyển nhượng <b>nhà ở duy nhất</b> (đáp ứng điều kiện sở hữu ≥ 6 tháng).</li>
+          <li>Thu nhập từ <b>lãi tiền gửi</b> tại ngân hàng, tổ chức tín dụng; lãi trái phiếu Chính phủ.</li>
+          <li>Thu nhập từ <b>kiều hối</b>.</li>
+          <li>Phần tiền lương làm việc <b>ban đêm, làm thêm giờ</b> được trả cao hơn so với ban ngày, giờ tiêu chuẩn.</li>
+          <li>Tiền <b>lương hưu</b> do Quỹ BHXH chi trả; lương hưu do quỹ hưu trí tự nguyện chi trả hàng tháng.</li>
+          <li>Học bổng nhận từ ngân sách nhà nước hoặc tổ chức trong và ngoài nước.</li>
+          <li>Tiền <b>bồi thường</b> bảo hiểm, tai nạn lao động, trợ cấp một lần khi sinh con, nuôi con nuôi...</li>
+        </ul>
+      `
+    },
+    {
+      id: 's9',
+      title: 'Quyết toán thuế TNCN',
+      content: `
+        <p>Cá nhân có nghĩa vụ quyết toán thuế TNCN nếu:</p>
+        <ul>
+          <li>Có số thuế phải nộp thêm so với số đã tạm nộp.</li>
+          <li>Có yêu cầu hoàn thuế hoặc bù trừ vào kỳ tiếp theo.</li>
+        </ul>
+        <h3>Thời hạn quyết toán:</h3>
+        <ul>
+          <li><b>Cá nhân tự quyết toán</b>: chậm nhất là <b>cuối tháng 4</b> năm sau.</li>
+          <li><b>Tổ chức trả thu nhập quyết toán thay</b>: chậm nhất là <b>cuối tháng 3</b> năm sau.</li>
+        </ul>
+        <blockquote>
+          Cá nhân có thể uỷ quyền cho tổ chức trả thu nhập quyết toán thay nếu chỉ có một nguồn thu nhập từ tiền lương, tiền công.
+        </blockquote>
+      `
+    }
+  ];
+
+  function loadSections() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      }
+    } catch (e) { console.warn('Lỗi đọc localStorage:', e); }
+    return DEFAULT_SECTIONS;
+  }
+
+  function render(sections) {
+    const tocEl = document.getElementById('toc');
+    const sectionsEl = document.getElementById('sections');
+    const tocWrap = document.getElementById('toc-wrap');
+
+    if (!sections.length) {
+      tocWrap.style.display = 'none';
+      sectionsEl.innerHTML = `
+        <div class="empty-state">
+          <div class="icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          </div>
+          <p>Chưa có nội dung luật. Quản trị viên hãy thêm tại trang <a href="admin.html">Admin</a>.</p>
+        </div>`;
+      return;
+    }
+
+    tocWrap.style.display = '';
+    tocEl.innerHTML = sections.map((s, i) =>
+      `<li><a href="#${s.id}"><span class="num">${i+1}</span>${escapeHtml(s.title)}</a></li>`
+    ).join('');
+
+    sectionsEl.innerHTML = sections.map((s, i) => `
+      <section class="section" id="${s.id}" data-title="${escapeHtml(s.title).toLowerCase()}" data-text="${stripHtml(s.content).toLowerCase()}">
+        <h2><span class="badge">${i+1}</span>${escapeHtml(s.title)}</h2>
+        <div class="content">${s.content || ''}</div>
+      </section>
+    `).join('');
+  }
+
+  function escapeHtml(str) {
+    return String(str ?? '').replace(/[&<>"']/g, c => ({
+      '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+    }[c]));
+  }
+  function stripHtml(html) {
+    const tmp = document.createElement('div');
+    tmp.innerHTML = html || '';
+    return (tmp.textContent || '').replace(/"/g, '&quot;');
+  }
+
+  document.getElementById('search').addEventListener('input', e => {
+    const q = e.target.value.trim().toLowerCase();
+    document.querySelectorAll('.section').forEach(sec => {
+      const hit = !q
+        || sec.dataset.title.includes(q)
+        || sec.dataset.text.includes(q);
+      sec.classList.toggle('hidden', !hit);
+    });
+  });
+
+  render(loadSections());
+
+  window.addEventListener('storage', e => {
+    if (e.key === STORAGE_KEY) render(loadSections());
+  });
+</script>
+</body>
+</html>

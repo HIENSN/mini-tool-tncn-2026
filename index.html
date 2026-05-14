@@ -39,8 +39,51 @@
     background-attachment: fixed;
     min-height: 100vh;
     color: var(--text);
-    padding: 40px 20px 60px;
+    padding: 30px 20px 60px;
     -webkit-font-smoothing: antialiased;
+  }
+
+  .navbar {
+    max-width: 920px;
+    margin: 0 auto 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 16px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 14px;
+    backdrop-filter: blur(10px);
+  }
+  .navbar .brand {
+    color: #fff;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.2px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .navbar .brand .logo {
+    width: 26px; height: 26px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 800; color: #fff;
+  }
+  .navbar nav { display: flex; gap: 6px; }
+  .navbar nav a {
+    padding: 8px 14px;
+    border-radius: 8px;
+    color: #cbd5e1;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.15s;
+  }
+  .navbar nav a:hover { background: rgba(255,255,255,0.08); color: #fff; }
+  .navbar nav a.active {
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    color: #fff;
+    font-weight: 600;
   }
 
   .header {
@@ -438,6 +481,8 @@
 
   @media (max-width: 640px) {
     body { padding: 20px 12px 40px; }
+    .navbar { padding: 8px 12px; flex-wrap: wrap; gap: 8px; }
+    .navbar nav a { padding: 6px 10px; font-size: 12px; }
     .header h1 { font-size: 26px; }
     .body { padding: 22px 18px; }
     .grid { grid-template-columns: 1fr; }
@@ -449,6 +494,15 @@
 </style>
 </head>
 <body>
+
+<div class="navbar">
+  <div class="brand"><span class="logo">T</span> TNCN 2026</div>
+  <nav>
+    <a href="index.html" class="active">Tính thuế</a>
+    <a href="luat.html">Luật TNCN</a>
+    <a href="admin.html">Admin</a>
+  </nav>
+</div>
 
 <div class="header">
   <div class="badge-top"><span class="dot"></span> Cập nhật theo Luật TNCN 2025 — áp dụng từ 01/01/2026</div>
