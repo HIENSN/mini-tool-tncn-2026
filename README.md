@@ -4,7 +4,7 @@ Bộ công cụ web gồm **3 trang** phục vụ tra cứu và tính **Thuế T
 
 > 🌐 **Demo trực tuyến:** https://hiensn.github.io/mini-tool-tncn-2026/
 
-> Chạy hoàn toàn trên trình duyệt — không cần backend, dữ liệu admin lưu trong `localStorage`.
+> Frontend tĩnh (HTML/CSS/JS thuần) + database **Supabase** (Postgres + Realtime) cho dữ liệu mục luật. Tự fallback sang `localStorage` nếu chưa cấu hình Supabase.
 
 ## Các trang trong sản phẩm
 
@@ -30,7 +30,7 @@ Cả ba trang dùng chung thanh điều hướng — di chuyển qua lại bằn
 - Hiển thị **9 mục luật mặc định** (cơ sở pháp lý, đối tượng, biểu thuế, giảm trừ, miễn thuế, quyết toán...)
 - **Mục lục** điều hướng nhanh trong trang
 - **Tìm kiếm** trong nội dung các điều khoản
-- Đọc dữ liệu trực tiếp từ `localStorage` (do Admin chỉnh sửa)
+- Đọc dữ liệu trực tiếp từ Supabase (do Admin chỉnh sửa) — tự cập nhật realtime khi admin sửa ở tab khác
 
 ### 🔐 Trang admin (`admin.html`)
 - **Đăng nhập** bằng mật khẩu (mặc định: `admin123`, đổi tại biến `ADMIN_PASSWORD` trong file)
@@ -51,47 +51,81 @@ Cả ba trang dùng chung thanh điều hướng — di chuyển qua lại bằn
 
 ## Cách dùng
 
-### Cách 1: Mở trực tiếp
+### Cách 1: Mở trực tiếp (chế độ offline — localStorage)
 ```bash
 git clone https://github.com/HIENSN/mini-tool-tncn-2026.git
 cd mini-tool-tncn-2026
-# Mở index.html bằng trình duyệt
+cp supabase-config.example.js supabase-config.js
+# Mở index.html bằng trình duyệt — vì chưa điền key nên dùng localStorage
 ```
 
 ### Cách 2: Truy cập bản đã deploy
 👉 https://hiensn.github.io/mini-tool-tncn-2026/
 
-### Cách 3: Tự deploy lên GitHub Pages
+### Cách 3: Tự deploy + kết nối Supabase
 1. Fork repo này về tài khoản của bạn
-2. Vào **Settings → Pages**
-3. Tại **Source**, chọn branch `main` + folder `/ (root)` → **Save**
-4. Sau vài giây sẽ có URL dạng `https://<username>.github.io/<repo>/`
+2. Tạo Supabase project và bảng (xem [Setup Supabase](#setup-supabase) bên dưới)
+3. Copy `supabase-config.example.js` thành `supabase-config.js`, điền URL + anon key
+4. Vào **Settings → Pages**, chọn branch `main` + folder `/ (root)` → **Save**
+5. Sau vài giây sẽ có URL dạng `https://<username>.github.io/<repo>/`
+
+> ⚠️ File `supabase-config.js` **đã được gitignore** để khỏi push key lên GitHub. Khi deploy GitHub Pages, bạn cần commit phiên bản chứa key thật vào branch riêng (vd `gh-pages`) hoặc dùng GitHub Actions ghi file lúc build.
+
+## Setup Supabase
+
+### 1. Tạo project
+- Vào https://supabase.com → New project (chọn region Singapore cho gần VN)
+
+### 2. Tạo bảng `law_sections`
+Mở **SQL Editor** → chạy đoạn SQL sau:
+```sql
+create table law_sections (
+  id text primary key,
+  title text not null,
+  content text not null,
+  position int not null default 0,
+  updated_at timestamptz not null default now()
+);
+alter table law_sections enable row level security;
+create policy "Anyone can read" on law_sections for select using (true);
+create policy "Anyone can write" on law_sections for all using (true) with check (true);
+alter publication supabase_realtime add table law_sections;
+```
+
+### 3. Lấy URL + anon key
+**Project Settings → API** → copy **Project URL** và **anon public** key → dán vào `supabase-config.js`.
+
+### 4. Khởi tạo dữ liệu
+Mở `admin.html` lần đầu → đăng nhập (mật khẩu `admin123`) → tool tự đẩy 9 mục mặc định lên Supabase.
 
 ## Lưu trữ dữ liệu (Database)
 
-Toàn bộ nội dung mục luật được lưu trong **`localStorage`** của trình duyệt người dùng, key `tncn_law_sections_v1`. Nghĩa là:
+- **Khi đã cấu hình Supabase**: dữ liệu lưu trên cloud, đồng bộ giữa mọi thiết bị, realtime giữa các tab.
+- **Khi chưa cấu hình** (`supabase-config.js` còn placeholder hoặc thiếu): tự fallback sang `localStorage` của trình duyệt (key `tncn_law_sections_v1`).
+- Nút **Xuất / Nhập JSON** trong admin vẫn hoạt động để backup hoặc migrate dữ liệu.
 
-- Mỗi trình duyệt giữ một bản sao riêng — chỉnh sửa của admin trên máy A không ảnh hưởng đến máy B.
-- Phù hợp với phạm vi bài tập / demo cá nhân (không cần dựng server).
-- Muốn đồng bộ giữa nhiều máy: dùng nút **Xuất JSON** → gửi file qua máy khác → **Nhập JSON**.
+> ⚠️ **Lưu ý bảo mật**: policy `"Anyone can write"` cho phép ai có anon key đều có thể sửa DB. Phù hợp cho bài tập/demo. Production thật nên dùng Supabase Auth + RLS theo user role.
 
 ## Stack
 
 - HTML / CSS / Vanilla JavaScript — không framework, không build step
 - Font: Inter (Google Fonts)
-- 3 file HTML độc lập, dễ host trên bất kỳ static hosting nào
+- Database: **Supabase** (`@supabase/supabase-js` qua CDN) — Postgres + Realtime + Row-Level Security
+- Fallback: `localStorage` khi chưa cấu hình Supabase
 
 ## Cấu trúc thư mục
 
 ```
 .
-├── index.html                # Trang tính thuế (chính)
-├── luat.html                 # Trang tổng hợp luật TNCN
-├── admin.html                # Trang quản trị nội dung luật
-├── README.md                 # File này
-├── LICENSE                   # MIT License
-├── .gitignore                # Loại trừ file IDE/OS/env
-└── claude-code-history.txt   # Lịch sử trò chuyện với Claude Code
+├── index.html                      # Trang tính thuế (chính)
+├── luat.html                       # Trang tổng hợp luật TNCN (đọc Supabase)
+├── admin.html                      # Trang quản trị (ghi Supabase)
+├── supabase-config.example.js      # File mẫu cấu hình Supabase
+├── supabase-config.js              # (gitignored) Cấu hình thật — tự tạo từ .example
+├── README.md                       # File này
+├── LICENSE                         # MIT License
+├── .gitignore                      # Loại trừ file IDE/OS/env/config
+└── claude-code-history.txt         # Lịch sử trò chuyện với Claude Code
 ```
 
 ## License

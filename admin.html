@@ -468,6 +468,8 @@
 
 <div id="toast" class="toast"></div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
 <script>
   const STORAGE_KEY = 'tncn_law_sections_v1';
   const AUTH_KEY = 'tncn_admin_auth';
@@ -487,19 +489,61 @@
 
   let sections = [];
 
-  function loadSections() {
+  function hasSupabaseConfig() {
+    const c = window.SUPABASE_CONFIG;
+    return !!(c && c.url && c.url.startsWith('http') && c.anonKey && c.anonKey.length > 20);
+  }
+  const sb = (hasSupabaseConfig() && window.supabase)
+    ? window.supabase.createClient(window.SUPABASE_CONFIG.url, window.SUPABASE_CONFIG.anonKey)
+    : null;
+
+  function loadFromLocal() {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) {
         const parsed = JSON.parse(raw);
-        if (Array.isArray(parsed)) return parsed;
+        if (Array.isArray(parsed) && parsed.length) return parsed;
       }
     } catch (e) { console.warn(e); }
     return JSON.parse(JSON.stringify(DEFAULT_SECTIONS));
   }
 
+  async function pushAllToDb(arr) {
+    if (!sb) return true;
+    const { error: delErr } = await sb.from('law_sections').delete().neq('id', '__never_match__');
+    if (delErr) { toast('Lỗi xoá dữ liệu cũ: ' + delErr.message, 'error'); return false; }
+    if (arr.length) {
+      const rows = arr.map((s, i) => ({
+        id: s.id, title: s.title, content: s.content, position: i
+      }));
+      const { error } = await sb.from('law_sections').insert(rows);
+      if (error) { toast('Lỗi lưu lên Supabase: ' + error.message, 'error'); return false; }
+    }
+    return true;
+  }
+
+  async function loadSections() {
+    if (!sb) return loadFromLocal();
+    const { data, error } = await sb
+      .from('law_sections')
+      .select('*')
+      .order('position', { ascending: true });
+    if (error) {
+      toast('Lỗi tải dữ liệu: ' + error.message, 'error');
+      return loadFromLocal();
+    }
+    if (!data || data.length === 0) {
+      const initial = loadFromLocal();
+      await pushAllToDb(initial);
+      toast('Đã khởi tạo dữ liệu mặc định lên Supabase', 'success');
+      return initial;
+    }
+    return data.map(({ position, updated_at, ...rest }) => rest);
+  }
+
   function saveSections() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(sections));
+    if (sb) pushAllToDb(sections);
   }
 
   function newId() {
@@ -678,10 +722,10 @@
     document.getElementById('login-screen').style.display = '';
     document.getElementById('admin-screen').style.display = 'none';
   }
-  function showAdmin() {
+  async function showAdmin() {
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('admin-screen').style.display = '';
-    sections = loadSections();
+    sections = await loadSections();
     render();
   }
 

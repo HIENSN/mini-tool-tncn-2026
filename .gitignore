@@ -7,3 +7,6 @@ Thumbs.db
 node_modules/
 .env
 .env.local
+
+# Supabase config chứa anon key — không commit, mỗi máy tự tạo từ .example
+supabase-config.js
