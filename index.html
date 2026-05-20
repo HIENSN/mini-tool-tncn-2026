@@ -467,6 +467,37 @@
   .pill-30 { background: #f59e0b; }
   .pill-35 { background: #ef4444; }
 
+  .btn-lookup {
+    margin-top: 12px;
+    padding: 11px 20px;
+    background: linear-gradient(135deg, var(--primary), #818cf8);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    letter-spacing: 0.2px;
+  }
+  .btn-lookup:hover { opacity: 0.88; transform: translateY(-1px); }
+  .lookup-status {
+    margin-top: 10px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.5;
+  }
+  .lookup-status.success { background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0; }
+  .lookup-status.error   { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
+  .lookup-status.loading { background: var(--primary-soft); color: var(--primary-dark); border: 1px solid #c7d2fe; }
+  .nhansu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 10px 0 0; }
+  @media (max-width: 640px) { .nhansu-grid { grid-template-columns: 1fr; } }
+
   .tier-badge {
     display: inline-flex;
     align-items: center;
@@ -522,6 +553,25 @@
 
   <div class="body">
     <div class="grid">
+
+      <fieldset>
+        <legend>Thông tin nhân sự</legend>
+        <div class="nhansu-grid">
+          <div class="field">
+            <label for="emp-name">Họ và tên</label>
+            <input type="text" id="emp-name" placeholder="Nhập họ tên để tra cứu bảng lương...">
+          </div>
+          <div class="field">
+            <label for="emp-cccd">Số CCCD / CMND</label>
+            <input type="text" id="emp-cccd" placeholder="Nhập số CCCD (thông tin tham khảo)">
+          </div>
+        </div>
+        <button class="btn-lookup" onclick="lookupEmployee()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          Tra cứu từ bảng lương
+        </button>
+        <div class="lookup-status" id="lookup-status" style="display:none"></div>
+      </fieldset>
 
       <fieldset>
         <legend>Thu nhập chịu thuế / năm</legend>
@@ -743,6 +793,135 @@
     });
 
     document.getElementById('result').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  // ── Tra cuu nhan su tu Google Sheets ───────────────────────────────────────
+  const LOOKUP_SHEET_ID  = '1Ux1aaL2q9A73HTKpBQEOoari5F5tltI5J8-j65mlCmM';
+  const LOOKUP_SHEET_GID = '0';
+
+  function normalizeViText(s) {
+    return (s || '').trim().toLowerCase()
+      .normalize('NFD').replace(/[̀-ͯ]/g, '')
+      .replace(/\s+/g, ' ');
+  }
+
+  function parseCSVLine(line) {
+    const cells = []; let inQuote = false, cell = '';
+    for (let i = 0; i < line.length; i++) {
+      const ch = line[i];
+      if (ch === '"') { inQuote = !inQuote; continue; }
+      if (ch === ',' && !inQuote) { cells.push(cell.trim()); cell = ''; continue; }
+      cell += ch;
+    }
+    cells.push(cell.trim());
+    return cells;
+  }
+
+  function parseGSheetCSV(text) {
+    return text.split('\n').filter(l => l.trim()).map(parseCSVLine);
+  }
+
+  function findHeaderRow(rows) {
+    for (let i = 0; i < Math.min(rows.length, 6); i++) {
+      for (let j = 0; j < rows[i].length; j++) {
+        const cell = normalizeViText(rows[i][j]);
+        if (cell === 'ho ten' || cell === 'ho va ten' || cell === 'ten') {
+          return { idx: i, row: rows[i] };
+        }
+      }
+    }
+    return null;
+  }
+
+  function getColIdx(headerRow) {
+    const result = { name: -1, income: -1, bhxh: -1 };
+    headerRow.forEach((h, j) => {
+      const cell = normalizeViText(h);
+      if (cell.includes('ho ten') || cell.includes('ho va ten')) result.name = j;
+      if (cell.includes('tong thu nhap')) result.income = j;
+      if (cell.includes('bhxh khau tru')) result.bhxh = j;
+    });
+    return result;
+  }
+
+  function showLookupStatus(msg, type) {
+    const el = document.getElementById('lookup-status');
+    el.textContent = msg;
+    el.className = 'lookup-status ' + type;
+    el.style.display = 'block';
+  }
+
+  async function lookupEmployee() {
+    const nameInput = (document.getElementById('emp-name').value || '').trim();
+    if (!nameInput) {
+      showLookupStatus('Vui lòng nhập họ và tên để tra cứu.', 'error');
+      return;
+    }
+    showLookupStatus('Đang tra cứu dữ liệu bảng lương...', 'loading');
+
+    try {
+      const url = `https://docs.google.com/spreadsheets/d/${LOOKUP_SHEET_ID}/export?format=csv&gid=${LOOKUP_SHEET_GID}`;
+      const resp = await fetch(url);
+      if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+      const text = await resp.text();
+
+      const rows = parseGSheetCSV(text);
+      const headerInfo = findHeaderRow(rows);
+      if (!headerInfo) throw new Error('Không tìm thấy cấu trúc dữ liệu trong sheet.');
+
+      const { idx: hIdx, row: hRow } = headerInfo;
+      const cols = getColIdx(hRow);
+      if (cols.name < 0) throw new Error('Không tìm thấy cột "Họ tên" trong sheet.');
+
+      const nameQ = normalizeViText(nameInput);
+      let totalIncome = 0, totalBHXH = 0, found = 0;
+
+      for (let i = hIdx + 1; i < rows.length; i++) {
+        const row = rows[i];
+        if (!row[cols.name]) continue;
+        if (normalizeViText(row[cols.name]) === nameQ) {
+          if (cols.income >= 0) totalIncome += parseInt((row[cols.income] || '0').replace(/[^\d]/g, '')) || 0;
+          if (cols.bhxh >= 0)   totalBHXH  += parseInt((row[cols.bhxh]  || '0').replace(/[^\d]/g, '')) || 0;
+          found++;
+        }
+      }
+
+      if (found === 0) {
+        showLookupStatus(`Không tìm thấy "${nameInput}" trong danh sách nhân sự. Kiểm tra lại chính tả.`, 'error');
+        return;
+      }
+
+      // Auto-fill thu nhap
+      if (totalIncome > 0) {
+        const incomeList = document.getElementById('income-list');
+        const firstRow = incomeList.querySelector('.income-row');
+        if (firstRow) {
+          firstRow.querySelectorAll('input[type="text"]')[0].value = `Lương & thu nhập (${nameInput})`;
+          const amtInp = firstRow.querySelector('.income-amt');
+          amtInp.value = formatAmount(String(totalIncome));
+          updateIncomeTotal();
+        }
+      }
+
+      // Auto-fill BHXH
+      if (totalBHXH > 0) {
+        document.getElementById('bhxh').value = formatAmount(String(totalBHXH));
+      }
+
+      showLookupStatus(
+        `✓ Tìm thấy ${found} kỳ lương. Thu nhập/năm: ${fmt(totalIncome)} | BHXH/năm: ${fmt(totalBHXH)}. Kiểm tra số người phụ thuộc rồi nhấn Tính thuế.`,
+        'success'
+      );
+
+    } catch (e) {
+      const isOffline = e.message.includes('Failed to fetch') || e.message.includes('NetworkError');
+      showLookupStatus(
+        isOffline
+          ? 'Không thể kết nối. Tính năng tra cứu chỉ hoạt động khi mở qua GitHub Pages (không dùng được khi mở file:// trực tiếp).'
+          : `Lỗi: ${e.message}`,
+        'error'
+      );
+    }
   }
 </script>
 </body>
